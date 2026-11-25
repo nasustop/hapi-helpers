@@ -9,6 +9,7 @@ declare(strict_types=1);
  * @contact  xupengfei@xupengfei.net
  * @license  https://github.com/nasustop/hapi-helpers/blob/master/LICENSE
  */
+
 namespace Nasustop\HapiHelpers;
 
 class ConfigProvider
@@ -16,10 +17,8 @@ class ConfigProvider
     public function __invoke(): array
     {
         return [
-            'dependencies' => [
-            ],
-            'commands' => [
-            ],
+            'dependencies' => [],
+            'commands' => [],
             'annotations' => [
                 'scan' => [
                     'paths' => [

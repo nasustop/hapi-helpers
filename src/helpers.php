@@ -9,6 +9,9 @@ declare(strict_types=1);
  * @contact  xupengfei@xupengfei.net
  * @license  https://github.com/nasustop/hapi-helpers/blob/master/LICENSE
  */
+use Hyperf\Context\ApplicationContext;
+use Hyperf\Contract\ConfigInterface;
+
 if (! function_exists('value')) {
     /**
      * Return the default value of the given value.
@@ -22,6 +25,8 @@ if (! function_exists('value')) {
 if (! function_exists('env')) {
     /**
      * Gets the value of an environment variable.
+     * @param mixed $key
+     * @param null|mixed $default
      */
     function env($key, $default = null)
     {
@@ -53,20 +58,21 @@ if (! function_exists('env')) {
 if (! function_exists('config')) {
     /**
      * config.
+     * @param null|mixed $default
      */
     function config(string $key, $default = null)
     {
-        if (! \Hyperf\Context\ApplicationContext::hasContainer()) {
-            throw new \RuntimeException('The application context lacks the container.');
+        if (! ApplicationContext::hasContainer()) {
+            throw new RuntimeException('The application context lacks the container.');
         }
 
-        $container = \Hyperf\Context\ApplicationContext::getContainer();
+        $container = ApplicationContext::getContainer();
 
-        if (! $container->has(\Hyperf\Contract\ConfigInterface::class)) {
-            throw new \RuntimeException('ConfigInterface is missing in container.');
+        if (! $container->has(ConfigInterface::class)) {
+            throw new RuntimeException('ConfigInterface is missing in container.');
         }
 
-        return $container->get(\Hyperf\Contract\ConfigInterface::class)->get($key, $default);
+        return $container->get(ConfigInterface::class)->get($key, $default);
     }
 }
 
@@ -76,8 +82,8 @@ if (! function_exists('make')) {
      */
     function make(string $name, array $parameters = [])
     {
-        if (\Hyperf\Context\ApplicationContext::hasContainer()) {
-            $container = \Hyperf\Context\ApplicationContext::getContainer();
+        if (ApplicationContext::hasContainer()) {
+            $container = ApplicationContext::getContainer();
             if (method_exists($container, 'make')) {
                 return $container->make($name, $parameters);
             }
